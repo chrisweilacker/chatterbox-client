@@ -5,18 +5,17 @@ var RoomsView = {
 
   initialize: function() {
     RoomsView.$button.on('click', Rooms.add);
-    RoomsView.renderRoom('ALL');
+    RoomsView.renderRoom('ALL', 'ALL');
     RoomsView.$select.on('change', RoomsView.render);
   },
 
   render: function() {
     App.room = RoomsView.$select.val();
-    App.startSpinner();
-    App.fetch(App.stopSpinner);
+    App.fetch();
   },
 
-  renderRoom: function(roomName) {
-    RoomsView.$select.append(`<option value="${roomName}">${roomName}</option>`);
+  renderRoom: function(roomName, origRoomName) {
+    RoomsView.$select.append(`<option value="${origRoomName}">${roomName}</option>`);
   }
 
 };

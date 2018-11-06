@@ -2,7 +2,7 @@ var Parse = {
 
   server: `http://parse.${window.CAMPUS}.hackreactor.com/chatterbox/classes/messages`,
 
-  create: function(message, successCB, errorCB = null) {
+  create: function(message, successCB=null, errorCB = null) {
     // todo: save a message to the server
     $.ajax({
       // This is the url you should use to communicate with the parse API server.
@@ -12,7 +12,9 @@ var Parse = {
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Message sent');
-        successCB(data);
+        if(successCB) {
+          successCB(data);
+        }
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -22,7 +24,7 @@ var Parse = {
     });
   },
 
-  readAll: function(successCB, errorCB = null) {
+  readAll: function(successCB=null, errorCB = null) {
     $.ajax({
       url: Parse.server,
       type: 'GET',
@@ -30,7 +32,28 @@ var Parse = {
       contentType: 'application/json',
       success: function (data) {
         console.log('chatterbox: Messages read');
-        successCB(data);
+        if(successCB) {
+          successCB(data);
+        }
+      },
+      error: errorCB || function(error) {
+        console.error('chatterbox: Failed to fetch messages', error);
+      }
+    });
+  },
+
+  readRoom: function(roomName, successCB=null, errorCB = null) {
+    $.ajax({
+      url: Parse.server,
+      type: 'GET',
+      data: { order: '-createdAt',
+              where: `{"roomname": "${roomName}"}` },
+      contentType: 'application/json',
+      success: function (data) {
+        console.log(data);
+        if(successCB) {
+          successCB(data);
+        }
       },
       error: errorCB || function(error) {
         console.error('chatterbox: Failed to fetch messages', error);

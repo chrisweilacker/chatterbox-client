@@ -15,6 +15,7 @@ var FormView = {
     message.username = App.escape(App.username);
     Parse.create(message);
     App.fetch();
+    $('form #message').val('');
     console.log('click!');
   },
 

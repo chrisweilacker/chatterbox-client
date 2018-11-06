@@ -15,40 +15,49 @@ var App = {
     // Fetch initial batch of messages
     App.startSpinner();
     App.fetch(App.stopSpinner);
+    setInterval(() => {App.fetch();}, 10000);
+    Parse.readRoom();
 
   },
 
   fetch: function(callback = ()=>{}) {
-    Parse.readAll((data) => {
-      // examine the response from the server request:
-      $('#chats').empty();
-      console.log(data);
-      for (var i = 0; i<data.results.length; i++) {
-        var rm = data.results[i].roomname;
+    var readData = function (data) {
+        // examine the response from the server request:
+        $('#chats').empty();
+        console.log(data);
+        for (var i = 0; i<data.results.length; i++) {
+          var rm = data.results[i].roomname;
 
-        if (rm) {
-          rm = App.escape(rm.trim().toUpperCase());
-          if (!App.rooms[rm]) {
-            RoomsView.renderRoom(rm);
-            App.rooms[rm] = rm;
+          if (rm) {
+            rm = App.escape(rm.trim().toUpperCase());
+            if (!App.rooms[rm]) {
+              RoomsView.renderRoom(rm, data.results[i].roomname);
+              App.rooms[rm] = rm;
+            }
           }
-        }
-        if (App.room === rm || App.room === 'ALL') {
-          var message = data.results[i];
-          message.username = App.escape(message.username);
-          message.text = App.escape(message.text);
-          if (Friends.friendlist.includes(message.username)) {
-            message.isFriend = 'friend';
-          } else {
-            message.isFriend = 'notfriend';
-          }
+            var message = data.results[i];
+            message.username = App.escape(message.username);
+            message.text = App.escape(message.text);
+            if (Friends.friendlist.includes(message.username)) {
+              message.isFriend = 'friend';
+            } else {
+              message.isFriend = 'notfriend';
+            }
 
-          MessagesView.renderMessage(message);
-        }
-      }
+            MessagesView.renderMessage(message);
 
-      callback();
-    });
+        }
+
+        callback();
+      };
+
+    if (App.room === 'ALL') {
+      Parse.readAll(readData);
+    }  else {
+      Parse.readRoom(App.room, readData);
+    }
+
+
   },
 
   startSpinner: function() {
@@ -62,12 +71,14 @@ var App = {
   },
   escape : function(string) {
     var result = string;
-    result = result.replace(/&/g, '&amp;');
-    result = result.replace(/</g, '&lt;');
-    result = result.replace(/>/g, '&gt;');
-    result = result.replace(/"/g, '&quot;');
-    result = result.replace(/'/g, '&#x27;');
-    result = result.replace(/\//g, '&#x2F;');
+    if (result) {
+      result = result.replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;')
+      .replace(/\//g, '&#x2F;');
+    }
     return result;
   }
 };
