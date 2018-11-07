@@ -5,13 +5,25 @@ var RoomsView = {
 
   initialize: function() {
     RoomsView.$button.on('click', Rooms.add);
+    if (App.room !== 'ALL') {
+      RoomsView.renderRoom(App.room.trim().toUpperCase(), App.room);
+    }
     RoomsView.renderRoom('ALL', 'ALL');
     RoomsView.$select.on('change', RoomsView.render);
   },
 
   render: function() {
-    App.room = RoomsView.$select.val();
-    App.fetch();
+    var newTab = window.confirm('Do you want to open in a new tab?');
+    if (newTab) {
+      window.localStorage.setItem('room', RoomsView.$select.val());
+      window.open(window.location.href,'_blank');
+      RoomsView.$select.get(0).selectedIndex = 0;
+
+    } else {
+      App.room = RoomsView.$select.val();
+      App.fetch();
+    }
+
   },
 
   renderRoom: function(roomName, origRoomName) {
