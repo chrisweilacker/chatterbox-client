@@ -13,7 +13,7 @@ var RoomsView = {
   },
 
   render: function() {
-    var newTab = window.confirm('Do you want to open in a new tab?');
+    var newTab = $('#tab').prop('checked');
     if (newTab) {
       window.localStorage.setItem('room', RoomsView.$select.val());
       window.open(window.location.href,'_blank');

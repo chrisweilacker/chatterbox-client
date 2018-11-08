@@ -1,12 +1,11 @@
 body {
-    background: #eee;
+    background-color: #E6ECF0;
     text-align: center;
     padding: 0 25px;
     font-family: arial, sans-serif;
 }
 
 #main, #chats {
-    width: 500px;
     margin: auto;
     text-align: left;
     background: white;
@@ -15,9 +14,20 @@ body {
     border-width: 0 1px 1px 1px;
 }
 
+.row {
+    width: 85%;
+    margin: auto;
+}
+
+#main {
+    text-align: center;
+    width: 85%;
+}
+
 #main h1 {
+    text-align: center;
     margin-top: 0;
-    font-size: 35px;
+    font-size: 70px;
     margin-bottom: 5px;
     padding: 5px;
 }
@@ -46,6 +56,15 @@ body {
     line-height: 13px;
 }
 
+.friendList {
+    padding-top: 10px;
+    height: auto;
+    background-color: white;
+    border: solid #ddd;
+    border-width: 0 1px 1px 1px;
+    text-align: left;
+}
+
 form {
     padding: 20px;
     padding-left: 0;
@@ -62,7 +81,19 @@ form input[type=text] {
 .chat {
     padding: 5px;
     margin-bottom: 5px;
-    background-color: #eee;
+    background-color: white;
+    cursor: pointer;
+}
+
+.chat p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    word-wrap: break-word;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 .chat .username {
@@ -70,7 +101,7 @@ form input[type=text] {
 }
 
 .chat:hover {
-    background-color: #ddd;
+    background-color: #F5F8FA;
 }
 
 .spinner {
