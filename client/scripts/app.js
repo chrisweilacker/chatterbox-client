@@ -10,6 +10,10 @@ var App = {
   initialize: function() {
     App.username = window.location.search.substr(10);
 
+    if (App.username.includes('%20')) {
+      App.username = App.username.split('%20').join(' ');
+    }
+
     FormView.initialize();
 
     var setRoom = window.localStorage.getItem('room');
